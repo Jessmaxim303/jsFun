@@ -20,43 +20,37 @@ const { dinosaurs, humans, movies } = require('./datasets/dinosaurs');
 
 // DATASET: kitties from ./datasets/kitties
 const kittyPrompts = {
+
   orangeKittyNames() {
-    
     // Return an array of just the names of kitties who are orange e.g.
     // ['Tiger', 'Snickers']
-    const result = 'REPLACE WITH YOUR RESULT HERE';
-    return result;
-
-    // Annotation:
-    // Write your annotation here as a comment
+    let carArr = [];
+    kitties.map(cat => {
+        if (cat.color === 'orange') {
+          carArr.push(cat.name)
+        }
+    })
+    return carArr
   },
 
   sortByAge() {
     // Sort the kitties by their age
-
-    const result = 'REPLACE WITH YOUR RESULT HERE';
-    return result;
-
-    // Annotation:
-    // Write your annotation here as a comment
+    return kitties.sort((a, b) => {
+      return b.age - a.age;
+    })
   },
 
   growUp() {
     // Return an array of kitties who have all grown up by 2 years e.g.
-    // [{
-    //   name: 'Felicia',
-    //   age: 4,
-    //   color: 'grey'
-    // },
-    // {
-    //   name: 'Tiger',
-    //   age: 7,
-    //   color: 'orange'
-    // },
-    // ...etc]
-
-    const result = 'REPLACE WITH YOUR RESULT HERE';
-    return result;
+    return kitties.map(cat => {
+      return {
+        name: cat.name,
+        age: (cat.age + 2),
+        color: cat.color
+      }
+    }).sort((a, b) => {
+      return b.age - a.age;
+    })
   }
 };
 
@@ -78,6 +72,7 @@ const kittyPrompts = {
 
 // DATASET: clubs from ./datasets/clubs
 const clubPrompts = {
+
   membersBelongingToClubs() {
     // Create an object whose keys are the names of people, and whose values are
     // arrays that include the names of the clubs that person is a part of. e.g. 
@@ -86,13 +81,25 @@ const clubPrompts = {
     //   Pam: ['Drama', 'Art', 'Chess'],
     //   ...etc
     // }
-
-    const result = 'REPLACE WITH YOUR RESULT HERE';
-    return result;
-
-    // Annotation:
-    // Write your annotation here as a comment
+let memArr = clubs.reduce((acc, member) => {
+  acc = acc.concat(member.members)
+ return acc
+}, [])
+let objClub = memArr.reduce((acc, name) => {
+    let clubArr = [];
+    clubs.forEach(club => {
+      if (club.members.includes(name)) {
+        clubArr.push(club.club)
+      }
+    })
+  if (!acc[name]) {
+    acc[name] = clubArr;
   }
+  return acc
+}, {})
+return objClub;
+}
+
 };
 
 
@@ -122,12 +129,14 @@ const modPrompts = {
     //   { mod: 3, studentsPerInstructor: 10 },
     //   { mod: 4, studentsPerInstructor: 8 }
     // ]
+ 
+    return mods.map(mod => {
+        return {
+            mod: mod.mod,
+            studentsPerInstructor: (mod.students / mod.instructors)
+        }
+    })
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
-    return result;
-
-    // Annotation:
-    // Write your annotation here as a comment
   }
 };
 
@@ -157,95 +166,76 @@ const cakePrompts = {
     //    { flavor: 'yellow', inStock: 14 },
     //    ..etc
     // ]
+    return cakes.map(cake => {
+        return {
+            flavor: cake.cakeFlavor,
+            inStock: cake.inStock
+        }
+    })
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
-    return result;
-
-    // Annotation:
-    // Write your annotation here as a comment
   },
 
   onlyInStock() {
     // Return an array of only the cakes that are in stock
-    // e.g.
-    // [
-    //   {
-    //   cakeFlavor: 'dark chocolate',
-    //   filling: null,
-    //   frosting: 'dark chocolate ganache',
-    //   toppings: ['dutch process cocoa', 'toasted sugar', 'smoked sea salt'],
-    //   inStock: 15
-    // },
-    // {
-    //   cakeFlavor: 'yellow',
-    //   filling: 'citrus glaze',
-    //   frosting: 'chantilly cream',
-    //   toppings: ['berries', 'edible flowers'],
-    //   inStock: 14
-    // },
-    // ..etc
-    // ]
-
-    const result = 'REPLACE WITH YOUR RESULT HERE';
-    return result;
-
-    // Annotation:
-    // Write your annotation here as a comment
+ let instockCake = cakes.filter(cake => {
+    if (cake.inStock > 0) {
+        return cake;
+    }
+ })
+ return instockCake;
   },
   
   totalInventory() {
-    // Return the total amount of cakes in stock e.g.
-    // 59
-
-    const result = 'REPLACE WITH YOUR RESULT HERE';
-    return result;
-
-    // Annotation:
-    // Write your annotation here as a comment
+    let totalCake = cakes.reduce((acc, stock) => {
+        acc += stock.inStock
+        return acc
+    }, 0)
+    return totalCake;
   },
 
   allToppings() {
     // Return an array of all unique toppings (no duplicates) needed to bake
     // every cake in the dataset e.g.
-    // ['dutch process cocoa', 'toasted sugar', 'smoked sea salt', 'berries', ..etc]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
-    return result;
-
-    // Annotation:
-    // Write your annotation here as a comment
   },
 
   groceryList() {
     // I need to make a grocery list. Please give me an object where the keys are
     // each topping, and the values are the amount of that topping I need to buy e.g.
-    // { 
-    //    'dutch process cocoa': 1,
-    //    'toasted sugar': 3,
-    //    'smoked sea salt': 3,
-    //    'berries': 2, 
-    //    ...etc
-    // }
-
-    const result = 'REPLACE WITH YOUR RESULT HERE';
-    return result;
-
-    // Annotation:
-    // Write your annotation here as a comment
+    // let foodList = cakes.reduce((acc, cake) => {
+    //     cake.toppings.map(val => { //iterates through second array
+    //     if (!acc.includes(val)) { //check is acc/arr1 includes arr2 item
+    //     acc = acc.concat(val)
+    //       }
+    //     })
+    //     return acc
+    // }, [])
+    // let fullList = cakes.reduce((acc, stock) => {
+    //   acc = acc.concat(stock.toppings)
+    //   return acc
+    // }, [])
+    // return foodList.reduce((acc, cake) => {
+    //   let stockList = [];
+    //   let map1 = fullList.map(food => {
+    //     if (food === cake) {
+    //       stockList.push(cake)
+    //     }
+    //   })
+    //   acc[cake] = stockList.length
+    // return acc
+    // }, {})
   }
+
+
 };
 
 
 
-
-
-
 // ---------------------------------------------------------------------------
 // ---------------------------------------------------------------------------
 // ---------------------------------------------------------------------------
 // ---------------------------------------------------------------------------
 // ---------------------------------------------------------------------------
-
 
 
 
@@ -255,44 +245,33 @@ const cakePrompts = {
 const classPrompts = {
   feClassrooms() {
     // Create an array of just the front-end classrooms. e.g.
-    // [
-    //   { roomLetter: 'A', program: 'FE', capacity: 32 },
-    //   { roomLetter: 'C', program: 'FE', capacity: 27 },
-    //   { roomLetter: 'E', program: 'FE', capacity: 22 },
-    //   { roomLetter: 'G', program: 'FE', capacity: 29 }
-    // ]
-
-    const result = 'REPLACE WITH YOUR RESULT HERE';
-    return result;
-
-    // Annotation:
-    // Write your annotation here as a comment
+    let feProgram = classrooms.filter(room => {
+        if (room.program === 'FE') {
+            return room
+        }
+    })
+  return feProgram
   },
 
   totalCapacities() {
     // Create an object where the keys are 'feCapacity' and 'beCapacity',
     // and the values are the total capacity for all classrooms in each program e.g.
-    // { 
-    //   feCapacity: 110,
-    //   beCapacity: 96
-    // }
+    return classrooms.reduce((acc, room) => {
+      if (room.program === 'FE') {
+        acc.feCapacity += room.capacity;
+      } else {
+        acc.beCapacity += room.capacity
+      }
+      return acc
+    }, {feCapacity: 0, beCapacity: 0})
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
-    return result;
-
-    // Annotation:
-    // Write your annotation here as a comment
   },
 
   sortByCapacity() {
-    // Return the array of classrooms sorted by their capacity (least capacity to greatest)
-
-    const result = 'REPLACE WITH YOUR RESULT HERE';
-    return result;
-
-    // Annotation:
-    // Write your annotation here as a comment
+    // Return the array of classrooms sorted by their capacity 
+    return classrooms.sort((a, b) => a.capacity - b.capacity)    
   }
+
 };
 
 
@@ -313,45 +292,55 @@ const classPrompts = {
 
 // DATASET: breweries from ./datasets/breweries
 const breweryPrompts = {
-  getBeerCount() {
-    // Return the total beer count of all beers for every brewery e.g.
-    // 40
-
-    const result = 'REPLACE WITH YOUR RESULT HERE';
-    return result;
-
-    // Annotation:
-    // Write your annotation here as a comment
-  },
 
   getBreweryBeerCount() {
-    // Return an array of objects where each object has the name of a brewery
-    // and the count of the beers that brewery has e.g.
-    // [
-    //  { name: 'Little Machine Brew', beerCount: 12 },
-    //  { name: 'Ratio Beerworks', beerCount: 5},
-    // ...etc.
-    // ]
+    // Return the total beer count of all beers for every brewery e.g.
+    return breweries.map(brew => {
+      return {
+        name: brew.name,
+        beerCount: brew.beers.length
+      }
+    })
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
-    return result;
-
-    // Annotation:
-    // Write your annotation here as a comment
   },
+
+  // getBreweryBeerCount() {
+  //   // Return an array of objects where each object has the name of a brewery
+  //   // and the count of the beers that brewery has e.g.
+  //   return breweries.map(brewski => {
+  //     return {
+  //       name: brewski.name,
+  //       beerCount: brewski.beers.length
+  //     }
+  //   })
+
+  // }
 
   findHighestAbvBeer() {
     // Return the beer which has the highest ABV of all beers
     // e.g.
-    // { name: 'Barrel Aged Nature\'s Sweater', type: 'Barley Wine', abv: 10.9, ibu: 40 }
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
-    return result;
+    //the first thing: put all the beers in one array
 
-    // Annotation:
-    // Write your annotation here as a comment
-  }
-};
+    //once I have that, I'm going to sort it 
+
+    //once it's sorted, then I'm going to return the highest abv
+    return breweries.reduce((acc, brew) => {
+      acc = acc.concat(brew.beers)
+      return acc
+    }, []).sort((a, b) => b.abv - a.abv)[0]
+
+console.log(x)
+
+    //I am going to make a variable that's always that highest abv beer
+
+    //I am going to iterate through each brewery and find their beers
+    //got each brewery -> but my beer is less than instead of equal to
+
+    // for each beer, if it is higher than the current beer, reassign the variable
+}
+
+}
 
 
 
@@ -388,70 +377,71 @@ const turingPrompts = {
   studentsForEachInstructor() {
     // Return an array of instructors where each instructor is an object
     // with a name and the count of students in their module. e.g. 
-    // [
-    //  { name: 'Pam', studentCount: 21 },
-    //  { name: 'Robbie', studentCount: 18 }
-    // ]
+    let y 
+    let x = instructors.map(instructor => {
+      let modCount = cohorts.filter(cohort => {
+        if (cohort.module === instructor.module) {
+          y = cohort.studentCount
+        }
+      })
+      return {
+        name: instructor.name,
+        studentCount: y
+      }
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
-    return result;
+    })
+return x
 
-    // Annotation:
-    // Write your annotation here as a comment
   },
 
   studentsPerInstructor() {
     // Return an object of how many students per teacher there are in each cohort e.g.
-    // { 
-    // cohort1806: 9,
-    // cohort1804: 10.5
-    // }
+    return cohorts.reduce((acc, cohort) => {
+      let findMod = instructors.filter(element => element.module === cohort.module) 
+      if (!acc[cohort.cohort]) {
+        acc[`cohort${cohort.cohort}`] = (cohort.studentCount / findMod.length)
+      }
+      return acc
+    }, {})
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
-    return result;
-
-    // Annotation:
-    // Write your annotation here as a comment
   },
 
   modulesPerTeacher() {
-    // Return an object where each key is an instructor name and each value is
-    // an array of the modules they can teach based on their skills. e.g.:
-    // {
-    //     Pam: [2, 4],
-    //     Brittany: [2, 4],
-    //     Nathaniel: [2, 4],
-    //     Robbie: [4],
-    //     Leta: [2, 4],
-    //     Travis: [1, 2, 3, 4],
-    //     Louisa: [1, 2, 3, 4],
-    //     Christie: [1, 2, 3, 4],
-    //     Will: [1, 2, 3, 4]
-    //   }
-
-    const result = 'REPLACE WITH YOUR RESULT HERE';
-    return result;
-
-    // Annotation:
-    // Write your annotation here as a comment
+  return instructors.reduce((acc, instructor) => {
+      let mods = []
+      instructor.teaches.forEach(lesson => {
+        cohorts.filter(cohort => {
+            if(cohort.curriculum.includes(lesson) && !mods.includes(cohort.module)) {
+            mods.push(cohort.module)
+          }
+        })
+      })
+      acc[instructor.name] = mods.sort()
+      return acc;
+    }, {})
   },
 
   curriculumPerTeacher() {
     // Return an object where each key is a curriculum topic and each value is
     // an array of instructors who teach that topic e.g.:
-    // { 
-    //   html: [ 'Travis', 'Louisa' ],
-    //   css: [ 'Travis', 'Louisa' ],
-    //   javascript: [ 'Travis', 'Louisa', 'Christie', 'Will' ],
-    //   recursion: [ 'Pam', 'Leta' ]
-    // }
-
-    const result = 'REPLACE WITH YOUR RESULT HERE';
-    return result;
-
-    // Annotation:
-    // Write your annotation here as a comment
+    let endGame = cohorts.reduce((acc, cohort) => {
+      cohort.curriculum.map(tech => {
+      let newArr = []
+        instructors.filter(instructor => {
+          if (instructor.teaches.includes(tech)) {
+            newArr.push(instructor.name)
+          }
+        })
+      if (!acc[tech]) {
+        acc[tech] = []
+      }
+      acc[tech] = newArr
+      })
+      return acc
+    }, {})
+    return endGame
   }
+
 };
 
 
@@ -472,21 +462,24 @@ const turingPrompts = {
 
 // DATASET: bosses, sidekicks from ./datasets/bosses
 const bossPrompts = {
-  bossLoyalty() {
     // Create an array of objects that each have the name of the boss and the sum
     // loyalty of all their sidekicks. e.g.:
-    // [
-    //   { bossName: 'Jafar', sidekickLoyalty: 3 },
-    //   { bossName: 'Ursula', sidekickLoyalty: 20 },
-    //   { bossName: 'Scar', sidekickLoyalty: 16 }
-    // ]
-
-    const result = 'REPLACE WITH YOUR RESULT HERE';
-    return result;
-
-    // Annotation:
-    // Write your annotation here as a comment
+  bossLoyalty() {
+    let bossNames = Object.keys(bosses)
+    let bossYo = bossNames.map(boss => {
+      let sidekickArr = []
+      let sideKicksHq = sidekicks.filter(sidekick => sidekick.boss === bosses[boss].name).reduce((acc, loyalty) => {
+        acc += loyalty.loyaltyToBoss
+        return acc
+      }, 0)
+      return {
+        bossName: bosses[boss].name,
+        sidekickLoyalty: sideKicksHq
+      }
+    })
+    return bossYo
   }
+
 };
 
 
@@ -510,24 +503,9 @@ const astronomyPrompts = {
   starsInConstellations() {
     // Return an array of all the stars that appear in any of the constellations
     // listed in the constellations object e.g.
-    // [ 
-    //   { name: 'Rigel',
-    //     visualMagnitude: 0.13,
-    //     constellation: 'Orion',
-    //     lightYearsFromEarth: 860,
-    //     color: 'blue' },
-    //   { name: 'Betelgeuse',
-    //     visualMagnitude: 0.5,
-    //     constellation: 'Orion',
-    //     lightYearsFromEarth: 640,
-    //     color: 'red' }
-    // ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
-    return result;
+    return stars.filter(star => star.constellation === 'Orion')
 
-    // Annotation:
-    // Write your annotation here as a comment
   },
 
   starsByColor() {
@@ -589,16 +567,18 @@ const astronomyPrompts = {
 
 // DATASET: charaters, weapons from ./datasets/ultima
 const ultimaPrompts = {
-  totalDamage() {
 
+  totalDamage() {
     // Return the sum of the amount of damage for all the weapons that our characters can use
     // Answer => 113
+    return characters.reduce((acc, character) => {
+      acc = acc.concat(character.weapons)
+      return acc
+    }, []).reduce((acc, name) => {
+      acc += weapons[name].damage
+      return acc
+    }, 0)
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
-    return result;
-
-    // Annotation:
-    // Write your annotation here as a comment
   },
 
   charactersByTotal() {
@@ -606,12 +586,19 @@ const ultimaPrompts = {
     // Return the sum damage and total range for each character as an object. 
     // ex: [ { Avatar: { damage: 27, range: 24 }, { Iolo: {...}, ...}
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
-    return result;
-
-    // Annotation:
-    // Write your annotation here as a comment
+    return characters.map(character => {
+      return {
+        [character.name]: (character.weapons.reduce((acc, weapon) => {
+          acc.damage += weapons[weapon].damage
+          acc.range += weapons[weapon].range
+        return acc
+      }, {damage: 0, range: 0}))
+     }
+    })
   },
+
+
+
 };
 
 
@@ -635,52 +622,29 @@ const dinosaurPrompts = {
   countAwesomeDinosaurs() {
     // Return an object where each key is a movie title and each value is the 
     // number of awesome dinosaurs in that movie. e.g.:
-    // {
-    //   'Jurassic Park': 5,
-    //   'The Lost World: Jurassic Park': 8,
-    //   'Jurassic Park III': 9,
-    //   'Jurassic World': 11,
-    //   'Jurassic World: Fallen Kingdom': 18
-    // }
+    
+    return movies.reduce((acc, movie) => {
+      acc[movie.title] = (movie.dinos.length - 2)
+      return acc
+    }, {})
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
-    return result;
-
-    // Annotation:
-    // Write your annotation here as a comment
   },
 
   averageAgePerMovie() {
-    /* Return an object where each key is a movie director's name and each value is
-        an object whose key is a movie's title and whose value is the average age
-        of the cast on the release year of that movie.
-      e.g.:
-      { 
-        'Steven Spielberg': 
-          { 
-            'Jurassic Park': 34,
-            'The Lost World: Jurassic Park': 37 
-          },
-        'Joe Johnston': 
-          { 
-            'Jurassic Park III': 44 
-          },
-        'Colin Trevorrow': 
-          { 
-            'Jurassic World': 56
-           },
-        'J. A. Bayona': 
-          { 
-            'Jurassic World: Fallen Kingdom': 59 
-          } 
+     // Return an object where each key is a movie director's name and each value is
+     //    an object whose key is a movie's title and whose value is the average age
+     //    of the cast on the release year of that movie.
+     //  e.g.:
+     let x = movies.reduce((acc, movie) => {
+      if (!acc[movie.name]) {
+        acc[movie.name] = (movie.cast.reduce((acc, cast) => {
+
+        }));
       }
-    */
+     }, {})
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
-    return result;
+console.log(x)
 
-    // Annotation:
-    // Write your annotation here as a comment
   },
 
   uncastActors() {

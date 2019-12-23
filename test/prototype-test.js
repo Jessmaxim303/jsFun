@@ -17,10 +17,10 @@ const {
 
 describe("PROTOTYPES", () => {
   describe("Kitty Prompts", () => {
-    it("orangeKittyNames", () => {
+    it.skip("orangeKittyNames", () => {
       const e = kittyPrompts.orangeKittyNames();
       expect(e).to.deep.equal(["Tiger", "Snickers"])
-    }), it("sortByAge", () => {
+    }), it.skip("sortByAge", () => {
       const e = kittyPrompts.sortByAge();
       expect(e).to.deep.equal([{
         name: "Snickers",
@@ -39,7 +39,7 @@ describe("PROTOTYPES", () => {
         age: 1,
         color: "tuxedo"
       }])
-    }), it("growUp", () => {
+    }), it.skip("growUp", () => {
       const e = kittyPrompts.growUp();
       expect(e).to.deep.equal([{
         name: "Snickers",
@@ -60,7 +60,7 @@ describe("PROTOTYPES", () => {
       }])
     })
   }), describe("Club Prompts", () => {
-    it("membersBelongingToClubs", () => {
+    it.skip("membersBelongingToClubs", () => {
       const e = clubPrompts.membersBelongingToClubs({
         Louisa: ["Drama", "Art"],
         Pam: ["Drama", "Chess", "Newspaper"],
@@ -265,7 +265,7 @@ describe("PROTOTYPES", () => {
       })
     })
   }), describe("Turing Prompts", () => {
-    it("studentsForEachInstructor", () => {
+    it.only("studentsForEachInstructor", () => {
       const e = turingPrompts.studentsForEachInstructor();
       expect(e).to.deep.equal([{
         name: "Pam",
@@ -478,7 +478,7 @@ describe("PROTOTYPES", () => {
         'Jurassic World': 11,
         'Jurassic World: Fallen Kingdom': 18
       })
-    }), it("averageAgePerMovie", () => {
+    }), it.only("averageAgePerMovie", () => {
       const e = dinosaurPrompts.averageAgePerMovie();
       expect(e).to.deep.equal({
         'Steven Spielberg': {

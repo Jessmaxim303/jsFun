@@ -1,4 +1,4 @@
-const kitties = [
+ const kitties = [
   {
     name: 'Felicia',
     age: 2,
